@@ -1,0 +1,274 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  --gold: #D4AF37;
+  --gold-dark: #B8941F;
+  --gold-light: #F4E4A6;
+  --deep: #0B2545;
+  --navy: #1e3a5f;
+  --emerald: #2E8B57;
+  --mint: #40E0D0;
+  --cream: #FAF8F3;
+  --pearl: #FEFDF8;
+}
+
+/* Fonts */
+.font-amiri { font-family: 'Amiri', serif; }
+.font-poppins { font-family: 'Poppins', sans-serif; }
+
+/* Logo gradient text */
+.logo-gradient {
+  background: linear-gradient(135deg, var(--gold), var(--emerald));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Hero text highlight */
+.hero-highlight {
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+/* Button gradients and effects */
+.btn-gold-gradient {
+  background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+}
+
+.btn-emerald-gradient {
+  background: linear-gradient(135deg, var(--gold), var(--emerald));
+}
+
+.btn-hero-gradient {
+  background: linear-gradient(135deg, var(--deep), var(--navy), var(--emerald));
+}
+
+/* Hero background */
+.hero-bg {
+  background: linear-gradient(135deg, var(--deep) 0%, var(--navy) 50%, #2c5aa0 100%);
+}
+
+.hero-bg::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><defs><pattern id="islamic-hero" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M20 5 L35 20 L20 35 L5 20 Z M20 15 L25 20 L20 25 L15 20 Z" fill="%23D4AF37" opacity="0.08"/><circle cx="20" cy="20" r="2" fill="%232E8B57" opacity="0.05"/></pattern></defs><rect width="200" height="200" fill="url(%23islamic-hero)"/></svg>') center/cover;
+  pointer-events: none;
+  animation: backgroundShift 20s ease-in-out infinite;
+}
+
+/* Stats gradient text */
+.stat-gradient {
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Feature card gradients */
+.feature-card-border::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(90deg, var(--gold), var(--emerald));
+  transition: left 0.5s ease;
+}
+
+.feature-card-border:hover::before {
+  left: 0;
+}
+
+.feature-card-border::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--gold), var(--emerald));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+}
+
+.feature-card-border:hover::after {
+  opacity: 0.03;
+}
+
+/* Value card top border */
+.value-card-top::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold), var(--emerald));
+}
+
+/* Hero card top border */
+.hero-card-top::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: linear-gradient(90deg, var(--gold), var(--emerald), var(--mint));
+}
+
+/* Section header underline */
+.section-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 4px;
+  background: linear-gradient(90deg, var(--gold), var(--emerald));
+  border-radius: 2px;
+}
+
+/* Islamic patterns */
+.islamic-pattern-dots {
+  background: 
+    radial-gradient(circle at 0% 0%, var(--emerald) 1px, transparent 1px),
+    radial-gradient(circle at 25% 25%, var(--gold) 0.5px, transparent 0.5px),
+    radial-gradient(circle at 50% 50%, var(--mint) 1px, transparent 1px),
+    radial-gradient(circle at 75% 75%, var(--gold) 0.5px, transparent 0.5px),
+    radial-gradient(circle at 100% 100%, var(--emerald) 1px, transparent 1px);
+  background-size: 80px 80px, 40px 40px, 60px 60px, 30px 30px, 90px 90px;
+  background-position: 0 0, 15px 15px, 30px 30px, 45px 45px, 60px 60px;
+  opacity: 0.02;
+}
+
+.islamic-pattern-geometric {
+  background-image: conic-gradient(from 0deg at 50% 50%, var(--gold) 0deg, transparent 60deg, var(--gold) 120deg, transparent 180deg, var(--gold) 240deg, transparent 300deg, var(--gold) 360deg);
+  background-size: 60px 60px;
+  opacity: 0.03;
+  animation: rotatePattern 30s linear infinite;
+}
+
+/* Final CTA pattern */
+.cta-pattern {
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50 25 L75 50 L50 75 L25 50 Z" fill="%23D4AF37" opacity="0.03"/></svg>') center/100px 100px;
+  animation: patternMove 15s linear infinite;
+}
+
+/* Particles */
+.particle {
+  position: absolute;
+  background: var(--gold);
+  border-radius: 50%;
+  opacity: 0.1;
+  animation: floatParticle 8s linear infinite;
+}
+
+/* Navigation link underline effect */
+.nav-link-effect::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--gold), var(--emerald));
+  transition: width 0.3s ease;
+}
+
+.nav-link-effect:hover::after {
+  width: 100%;
+}
+
+/* Button shine effect */
+.btn-shine::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.btn-shine:hover::before {
+  left: 100%;
+}
+
+/* Hamburger animation */
+.hamburger.active span:nth-child(1) {
+  transform: rotate(45deg) translate(6px, 6px);
+}
+
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(6px, -6px);
+}
+
+/* Benefits list checkmark */
+.benefits-check::before {
+  content: '✓';
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, var(--gold), var(--emerald));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: white;
+  flex-shrink: 0;
+  font-size: 1.2rem;
+}
+
+/* Animations */
+@keyframes shimmer {
+  0%, 100% { background-position: -200% center; }
+  50% { background-position: 200% center; }
+}
+
+@keyframes backgroundShift {
+  0%, 100% { transform: translateX(0) translateY(0); }
+  25% { transform: translateX(-10px) translateY(-10px); }
+  50% { transform: translateX(10px) translateY(10px); }
+  75% { transform: translateX(-5px) translateY(15px); }
+}
+
+@keyframes floatParticle {
+  0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+  10% { opacity: 0.1; }
+  90% { opacity: 0.1; }
+  100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+}
+
+@keyframes rotatePattern {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes patternMove {
+  0% { background-position: 0 0; }
+  100% { background-position: 100px 100px; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
