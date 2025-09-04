@@ -17,6 +17,7 @@ const QuoteApplication = () => {
   const [awaitingUser, setAwaitingUser] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [showTyping, setShowTyping] = useState(false);
+  const [showFinalOptions, setShowFinalOptions] = useState(false);
 
   const addAssistantMessage = (content: string, step?: any, extra?: any) => {
     setMessages(prev => [
@@ -180,6 +181,7 @@ const QuoteApplication = () => {
             setConversationStep(conversationFlow.length);
             setAwaitingUser(true);
             setIsProcessing(false);
+            setShowFinalOptions(true);
           }, 1500);
         })();
       } else {
@@ -208,8 +210,43 @@ const QuoteApplication = () => {
   };
 
   const handleFinalAction = (action: string) => {
-    // Handle final actions like proceed, customize, etc.
-    console.log('Final action:', action);
+    // Show assistant response for each final action
+    setShowTyping(true);
+    setAwaitingUser(false);
+
+    const quoteRef = `TKF-${Date.now().toString().slice(-6)}`;
+
+    setTimeout(() => {
+      setShowTyping(false);
+      switch (action) {
+        case 'proceed':
+          addAssistantMessage(
+            "Excellent choice! 🎉\n\nI'm connecting you with our underwriting team to finalize your Shariah-compliant policy. You'll receive:\n\n• Policy documents within 24 hours\n• Payment setup instructions\n• Your Islamic compliance certificate\n• Direct contact for your account manager\n\nBarakallahu feeki for choosing Takaful! Your home will be protected according to Islamic principles."
+          );
+          break;
+        case 'customize':
+          addAssistantMessage(
+            `Perfect! Our coverage specialist will help you customize your policy to fit your exact needs and budget.\n\nThey'll contact you within 15 minutes to discuss:\n• Adjusting coverage limits\n• Adding optional coverages\n• Optimizing your deductible\n• Special endorsements\n\nYour quote reference number is: ${quoteRef}`
+          );
+          break;
+        case 'agent':
+          addAssistantMessage(
+            "Wonderful! I'm scheduling a call with one of our licensed Takaful specialists right now.\n\nExpected call time: Within 10 minutes\nSpecialist: Will have your complete quote ready\nTopics: Coverage details, Islamic compliance, next steps\n\nThey'll answer any questions about our Shariah-compliant approach and help you move forward.\n\nJazakallahu khairan for your patience!"
+          );
+          break;
+        case 'email':
+          addAssistantMessage(
+            `Sending complete quote details to ${String(userData.email || '').trim() || 'your email'} now...\n\nYour email will include:\n📧 Detailed coverage breakdown\n📊 Premium calculation\n📜 Islamic compliance certificate\n📋 Policy application\n📞 Direct contact information\n🔒 Secure payment portal link\n\nExpected delivery: 2-3 minutes\nQuote reference: ${quoteRef}\n\nAlhamdulillah! Thank you for choosing Takaful for your home protection needs.`
+          );
+          break;
+        default:
+          addAssistantMessage('Thanks! We will follow up shortly.');
+      }
+
+      // After responding, keep final options hidden
+      setShowFinalOptions(false);
+      setAwaitingUser(false);
+    }, 900);
   };
 
   const startConversation = () => {
@@ -241,6 +278,7 @@ const QuoteApplication = () => {
         onFinalAction={handleFinalAction}
         progressTexts={progressTexts}
         conversationFlow={conversationFlow}
+        showFinalOptions={showFinalOptions}
       />
     </MainLayout>
   );
