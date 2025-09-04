@@ -1,0 +1,57 @@
+/* 🌐 Landing Page Styles */
+
+/* Hero background + Islamic pattern overlay */
+.hero-bg {
+    background: linear-gradient(135deg, var(--deep) 0%, var(--navy) 50%, #2c5aa0 100%);
+  }
+  .hero-bg::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><defs><pattern id="islamic-hero" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M20 5 L35 20 L20 35 L5 20 Z M20 15 L25 20 L20 25 L15 20 Z" fill="%23D4AF37" opacity="0.08"/><circle cx="20" cy="20" r="2" fill="%232E8B57" opacity="0.05"/></pattern></defs><rect width="200" height="200" fill="url(%23islamic-hero)"/></svg>') center/cover;
+    pointer-events: none;
+    animation: backgroundShift 20s ease-in-out infinite;
+  }
+  
+  /* Hero highlight text */
+  .hero-highlight {
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 3s ease-in-out infinite;
+  }
+  
+  /* CTA Buttons */
+  .btn-gold-gradient {
+    background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+  }
+  .btn-emerald-gradient {
+    background: linear-gradient(135deg, var(--gold), var(--emerald));
+  }
+  .btn-hero-gradient {
+    background: linear-gradient(135deg, var(--deep), var(--navy), var(--emerald));
+  }
+  
+  /* Section underline */
+  .section-underline::after {
+    content: '';
+    position: absolute;
+    bottom: -10px; left: 50%;
+    transform: translateX(-50%);
+    width: 100px; height: 4px;
+    background: linear-gradient(90deg, var(--gold), var(--emerald));
+    border-radius: 2px;
+  }
+  
+  /* Animations */
+  @keyframes shimmer {
+    0%, 100% { background-position: -200% center; }
+    50% { background-position: 200% center; }
+  }
+  @keyframes backgroundShift {
+    0%, 100% { transform: translate(0,0); }
+    25% { transform: translate(-10px,-10px); }
+    50% { transform: translate(10px,10px); }
+    75% { transform: translate(-5px,15px); }
+  }
+  

@@ -1,0 +1,29 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+/* 🎨 Global Variables */
+:root {
+  --gold: #D4AF37;
+  --gold-dark: #B8941F;
+  --gold-light: #F4E4A6;
+  --deep: #0B2545;
+  --navy: #1e3a5f;
+  --emerald: #2E8B57;
+  --mint: #40E0D0;
+  --cream: #FAF8F3;
+  --pearl: #FEFDF8;
+  --text-dark: #1A1A1A;
+  --text-light: #6B7280;
+}
+
+/* Fonts */
+.font-amiri { font-family: 'Amiri', serif; }
+.font-poppins { font-family: 'Poppins', sans-serif; }
+
+/* Utility Gradient Text */
+.logo-gradient {
+  background: linear-gradient(135deg, var(--gold), var(--emerald));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}

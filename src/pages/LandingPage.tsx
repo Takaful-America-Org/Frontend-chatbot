@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { delay, motion, useInView } from "framer-motion";
+import { Link } from "react-router-dom";
+import "../styles/landingPage.css";
 
 export default function LandingPage() {
   const [scrolled, setScrolled] = useState(false);
@@ -44,17 +46,29 @@ export default function LandingPage() {
         }`}
       >
         <nav className="mx-auto flex max-w-full items-center justify-between px-4 md:px-8 relative">
-          <a
-            href="#home"
-            className="font-amiri text-6xl font-bold flex items-center gap-2 logo-gradient hover:scale-105 transition-transform duration-300"
-          >
-            ☪ Takaful
-          </a>
+          <div className="flex items-center gap-4 lg:gap-0">
+            {/* Hamburger - Only visible on mobile/tablet, positioned first */}
+            <div
+              className={`hamburger lg:hidden flex flex-col gap-1.5 cursor-pointer p-2 ${menuOpen ? "active" : ""}`}
+              onClick={() => setMenuOpen(!menuOpen)}
+            >
+              <span className="w-6 h-0.5 bg-slate-900 transition-all duration-300 rounded-sm"></span>
+              <span className="w-6 h-0.5 bg-slate-900 transition-all duration-300 rounded-sm"></span>
+              <span className="w-6 h-0.5 bg-slate-900 transition-all duration-300 rounded-sm"></span>
+            </div>
+
+            <a
+              href="#home"
+              className="font-amiri text-6xl font-bold flex items-center gap-2 logo-gradient hover:scale-105 transition-transform duration-300"
+            >
+              ☪ Takaful
+            </a>
+          </div>
 
           <ul
             className={`font-poppins text-xl font-semibold lg:flex items-center gap-10 ${
               menuOpen 
-                ? "flex flex-col gap-6 absolute top-full right-0 bg-white/98 backdrop-blur-xl p-8 rounded-xl shadow-xl border border-yellow-500/10 min-w-[200px] transform-none opacity-90 visible"
+                ? "flex flex-col gap-6 absolute top-full left-0 bg-white/98 backdrop-blur-xl p-8 rounded-xl shadow-xl border border-yellow-500/10 min-w-[200px] transform-none opacity-90 visible"
                 : "hidden"
             } lg:static lg:bg-transparent lg:backdrop-blur-none lg:p-0 lg:rounded-none lg:shadow-none lg:border-none lg:min-w-0`}
           >
@@ -65,18 +79,21 @@ export default function LandingPage() {
             <li><a href="#contact" className="nav-link-effect relative text-neutral-900 hover:text-yellow-600 hover:-translate-y-0.5 transition-all duration-300">Contact</a></li>
           </ul>
 
-          <a href="#quote" className="btn-gold-gradient text-white px-10 py-5 rounded-full font-semibold text-xl relative overflow-hidden btn-shine hover:-translate-y-1 hover:shadow-xl hover:shadow-yellow-500/40 transition-all duration-300 hidden lg:inline-block">
-            Get Quote
-          </a>
+          <div className="flex items-center gap-4">
+            {/* Get Quote Button */}
+            <Link to="/quote" className="btn-gold-gradient text-white px-10 py-5 rounded-full font-semibold text-xl relative overflow-hidden btn-shine hover:-translate-y-1 hover:shadow-xl hover:shadow-yellow-500/40 transition-all duration-300 inline-block">
+              Get Quote
+            </Link>
 
-          {/* Hamburger */}
-          <div
-            className={`hamburger lg:hidden flex flex-col gap-1.5 cursor-pointer p-2 ${menuOpen ? "active" : ""}`}
-            onClick={() => setMenuOpen(!menuOpen)}
-          >
-            <span className="w-6 h-0.5 bg-slate-900 transition-all duration-300 rounded-sm"></span>
-            <span className="w-6 h-0.5 bg-slate-900 transition-all duration-300 rounded-sm"></span>
-            <span className="w-6 h-0.5 bg-slate-900 transition-all duration-300 rounded-sm"></span>
+            {/* Hamburger Menu - positioned after the button */}
+            <div
+              className={`hamburger lg:hidden flex flex-col gap-1.5 cursor-pointer p-2 ${menuOpen ? "active" : ""}`}
+              onClick={() => setMenuOpen(!menuOpen)}
+            >
+              <span className="w-6 h-0.5 bg-slate-900 transition-all duration-300 rounded-sm"></span>
+              <span className="w-6 h-0.5 bg-slate-900 transition-all duration-300 rounded-sm"></span>
+              <span className="w-6 h-0.5 bg-slate-900 transition-all duration-300 rounded-sm"></span>
+            </div>
           </div>
         </nav>
       </header>

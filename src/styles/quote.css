@@ -1,0 +1,47 @@
+/* 💬 Takaful Quote Application Styles */
+
+.takaful-quote .font-serif { font-family: 'Amiri', serif; }
+.takaful-quote .font-sans { font-family: 'Poppins', sans-serif; }
+
+/* Pattern background */
+.islamic-pattern {
+  position: fixed; inset: 0;
+  opacity: 0.03;
+  background: 
+    radial-gradient(circle at 25% 25%, var(--gold) 1px, transparent 1px),
+    radial-gradient(circle at 75% 75%, var(--emerald) 1px, transparent 1px);
+  background-size: 60px 60px;
+  background-position: 0 0, 30px 30px;
+  pointer-events: none;
+  z-index: 1;
+  animation: patternFloat 20s ease-in-out infinite;
+}
+
+/* Chat animations */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.takaful-quote .animate-fadeInUp {
+  animation: fadeInUp 0.5s ease forwards;
+}
+
+@keyframes typingDot {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+  30% { transform: translateY(-4px); opacity: 1; }
+}
+@keyframes patternFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* Scrollbars */
+.takaful-quote .scrollbar-thin::-webkit-scrollbar { width: 6px; }
+.takaful-quote .scrollbar-thin::-webkit-scrollbar-thumb {
+  background: var(--gold); border-radius: 3px;
+}
+.takaful-quote * { scrollbar-width: thin; scrollbar-color: var(--gold) rgba(0,0,0,0.05); }
+
+/* Accessibility */
+.takaful-quote ::selection { background: rgba(212,175,55,0.2); color: var(--text-dark); }
+.takaful-quote *:focus { outline: 2px solid var(--gold); outline-offset: 2px; }
