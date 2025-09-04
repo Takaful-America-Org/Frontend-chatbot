@@ -14,7 +14,6 @@ interface ChatInterfaceProps {
   onFinalAction: (action: string) => void;
   progressTexts: string[];
   conversationFlow: any[];
-  showFinalOptions?: boolean;
 }
 
 const ChatInterface: React.FC<ChatInterfaceProps> = ({
@@ -26,8 +25,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
   onUserResponse,
   onFinalAction,
   progressTexts,
-  conversationFlow,
-  showFinalOptions
+  conversationFlow
 }) => {
   // Create wrapper functions that match the expected signatures
   const handleUserInput = (value: { text: string; sender: "user"; }) => {
@@ -49,9 +47,8 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
       <div className="border-t border-gray-100 bg-white p-4">
         {awaitingUser && (
           <ChatInput
-            inputType={showFinalOptions ? 'options' : (conversationFlow[conversationStep]?.options ? 'options' : 'input')}
+            inputType={conversationFlow[conversationStep]?.options ? 'options' : 'input'}
             currentStep={conversationFlow[conversationStep]}
-            showFinalOptions={Boolean(showFinalOptions)}
             onUserInput={handleUserInput}
             onOptionSelect={handleOptionSelect}
             onFinalAction={onFinalAction}
