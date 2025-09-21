@@ -1,7 +1,7 @@
 import React from 'react';
-import BackgroundPattern from './BackgroundPattern';
-import Header from './Header';
-import Footer from './Footer';
+import BackgroundPattern from '../chat/BackgroundPattern';
+import Header from '../Header';
+import Footer from '../Footer';
 
 interface MainLayoutProps {
   children: React.ReactNode;

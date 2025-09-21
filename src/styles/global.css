@@ -1,12 +1,12 @@
 @import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
-/* 🎨 Global Variables */
+/* 🎨 Theme Colors */
 :root {
-  --gold: #D4AF37;
-  --gold-dark: #B8941F;
-  --gold-light: #F4E4A6;
-  --deep: #0B2545;
+  --primary-gold: #D4AF37;
+  --dark-gold: #B8941F;
+  --light-gold: #F4E4A6;
+  --deep-blue: #0B2545;
   --navy: #1e3a5f;
   --emerald: #2E8B57;
   --mint: #40E0D0;
@@ -16,14 +16,73 @@
   --text-light: #6B7280;
 }
 
-/* Fonts */
+/* 📚 Fonts */
 .font-amiri { font-family: 'Amiri', serif; }
 .font-poppins { font-family: 'Poppins', sans-serif; }
 
-/* Utility Gradient Text */
+/* 🌟 Gradient Logo */
 .logo-gradient {
-  background: linear-gradient(135deg, var(--gold), var(--emerald));
+  background: linear-gradient(135deg, var(--primary-gold), var(--light-gold));
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+/* 📂 Upload Zone */
+.upload-zone {
+  @apply border-2 border-dashed border-[--primary-gold] rounded-xl p-6 mt-3 text-center text-sm text-[--text-light] transition cursor-pointer;
+}
+.upload-zone:hover {
+  @apply border-[--primary-gold] bg-[--primary-gold]/5;
+}
+
+/* 🗂️ Field Item */
+.field-item {
+  @apply bg-[--pearl] rounded-xl p-6 border border-[--primary-gold]/20 transition;
+}
+.field-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+/* 🏷️ Status Badges */
+.status-badge {
+  @apply px-2 py-1 rounded-md text-xs font-semibold uppercase tracking-wide;
+}
+.status-badge.encrypted { background: rgba(46,139,87,0.15); color: var(--emerald); }
+.status-badge.pending-approval { background: rgba(255,193,7,0.15); color: #ffc107; }
+.status-badge.access-denied    { background: rgba(220,53,69,0.15); color: #dc3545; }
+.status-badge.approved         { background: rgba(0,123,255,0.15); color: #007bff; }
+
+/* 📜 Audit Log */
+.audit-item {
+  @apply bg-[--pearl] p-4 mb-4 border-l-[3px] border-[--primary-gold] rounded-r-lg;
+}
+.audit-action  { @apply font-semibold text-[--text-dark]; }
+.audit-time    { @apply text-xs text-[--text-light]; }
+.audit-details { @apply text-sm text-[--text-light]; }
+
+/* 🕌 Islamic Pattern Background */
+.islamic-pattern {
+  position: absolute;
+  inset: 0;
+  opacity: 0.02;
+  background-image: conic-gradient(
+    from 0deg at 50% 50%,
+    var(--primary-gold) 0deg,
+    transparent 60deg,
+    var(--primary-gold) 120deg,
+    transparent 180deg,
+    var(--primary-gold) 240deg,
+    transparent 300deg,
+    var(--primary-gold) 360deg
+  );
+  background-size: 80px 80px;
+  pointer-events: none;
+  animation: spin-slow 40s linear infinite;
+}
+
+@keyframes spin-slow {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
