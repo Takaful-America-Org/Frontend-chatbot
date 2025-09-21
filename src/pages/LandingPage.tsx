@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useRef, useState } from "react";
-import { delay, motion, useInView } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import {  motion, useInView } from "framer-motion";
 import { Link } from "react-router-dom";
 import "../styles/landingPage.css";
 

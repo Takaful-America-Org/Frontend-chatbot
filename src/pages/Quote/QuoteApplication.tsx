@@ -1,15 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import MainLayout from './MainLayout';
-import ChatInterface from './ChatInterface';
-import WelcomeScreen from './WelcomeScreen';
-import { conversationFlow, progressTexts } from '../../data/ConversationFlow';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import MainLayout from "../../components/layouts/MainLayout";
+import ChatInterface from "../../components/chat/ChatInterface";
+import WelcomeScreen from "../../components/chat/WelcomeScreen";
+import { conversationFlow, progressTexts } from "../../data/ConversationFlow";
 import "../../styles/quote.css";
-import { registerUser } from '../../api/auth';
-import { createProperty } from '../../api/property';
-import { createQuote } from '../../api/quote';
-import type { PropertyCreateRequestSchema, QuoteCreateRequestSchema } from '../../api/schemas';
+import { registerUser } from "../../api/auth";
+import { createProperty } from "../../api/property";
+import { createQuote } from "../../api/quote";
+import type {
+  PropertyCreateRequestSchema,
+  QuoteCreateRequestSchema,
+} from "../../api/schemas";
 
-const QuoteApplication = () => {
+const QuoteApplication: React.FC = () => {
   const [conversationStep, setConversationStep] = useState(0);
   const [showWelcome, setShowWelcome] = useState(true);
   const [messages, setMessages] = useState<any[]>([]);
@@ -18,22 +22,31 @@ const QuoteApplication = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [showTyping, setShowTyping] = useState(false);
 
-  const addAssistantMessage = (content: string, step?: any, extra?: any) => {
-    setMessages(prev => [
+  const navigate = useNavigate();
+
+  const addAssistantMessage = (
+    content: string,
+    step?: any,
+    extra?: Record<string, any>
+  ) => {
+    setMessages((prev) => [
       ...prev,
-      { id: Date.now().toString(), type: 'assistant', content, step, ...(extra || {}) }
+      { id: Date.now().toString(), type: "assistant", content, step, ...(extra || {}) },
     ]);
   };
 
   const addUserMessage = (content: string) => {
-    setMessages(prev => [...prev, { id: Date.now().toString(), type: 'user', content }]);
+    setMessages((prev) => [
+      ...prev,
+      { id: Date.now().toString(), type: "user", content },
+    ]);
   };
 
   const getFriendlyName = () => {
-    const rawName = userData.full_name || userData.name || '';
-    if (!rawName || typeof rawName !== 'string') return 'friend';
+    const rawName = userData.full_name || userData.name || "";
+    if (!rawName || typeof rawName !== "string") return "friend";
     const first = rawName.trim().split(/\s+/)[0];
-    return first || 'friend';
+    return first || "friend";
   };
 
   const processNextStep = () => {
@@ -44,138 +57,60 @@ const QuoteApplication = () => {
     setShowTyping(true);
     setAwaitingUser(false);
 
-    const messageText = typeof step.message === 'function' ? step.message(getFriendlyName()) : step.message;
+    const messageText =
+      typeof step.message === "function"
+        ? step.message(getFriendlyName())
+        : step.message;
 
     setTimeout(() => {
       addAssistantMessage(messageText, step);
       setShowTyping(false);
 
-      if (step.type === 'loading' || step.id === 'generate_quote') {
-        // Call backend APIs to register user, create property, and create quote
+      if (step.type === "loading" || step.id === "generate_quote") {
         (async () => {
           try {
-            // 1) Register or upsert user
-            const fullName: string = userData.full_name || '';
-            const [firstName, ...rest] = (fullName || '').trim().split(/\s+/);
-            const lastName = rest.join(' ') || firstName || 'User';
-            const userRes = await registerUser({
-              email: String(userData.email || '').trim(),
-              first_name: firstName || 'User',
-              last_name: lastName || 'User',
-              phone_number: String(userData.phone_number || '').trim() || '+10000000000',
+            // 1️⃣ Register User
+            const registeredUser = await registerUser({
+              name: userData.full_name,
+              email: userData.email,
+              phone: userData.phone,
             });
+            const userId = registeredUser?.id;
 
-            const userId = userRes.user_id;
-
-            // Helpers: map UI fields to API enums/fields
-            const mapPropertyType = (v: string | undefined) => {
-              switch (v) {
-                case 'single_family':
-                  return 'single_family';
-                case 'townhouse':
-                  return 'townhouse';
-                case 'apartment':
-                case 'condo':
-                  return 'condo';
-                case 'duplex':
-                  return 'single_family';
-                default:
-                  return 'single_family';
-              }
+            // 2️⃣ Create Property
+            const propertyReq: PropertyCreateRequestSchema = {
+              address: userData.address,
+              state: userData.state,
+              zip_code: userData.zip_code,
+              dwelling_limit: parseFloat(userData.dwelling_limit),
+              year_built: parseInt(userData.year_built, 10),
             };
+            const propertyRes = await createProperty(userId, propertyReq);
+            const propertyId = propertyRes?.id;
 
-            const mapConstructionMaterial = (v: string | undefined) => {
-              switch (v) {
-                case 'frame':
-                  return 'frame';
-                case 'masonry':
-                  return 'masonry';
-                case 'steel':
-                  return 'steel';
-                case 'mixed':
-                case 'other':
-                  return 'other';
-                default:
-                  return 'frame';
-              }
-            };
-
-            const mapFoundation = (v: string | undefined) => {
-              switch (v) {
-                case 'slab':
-                  return 'slab';
-                case 'basement':
-                  return 'basement';
-                case 'crawl_space':
-                  return 'crawl_space';
-                case 'pier_post':
-                case 'pier_beam':
-                  return 'pier_beam';
-                default:
-                  return 'slab';
-              }
-            };
-
-            const mapGarage = (v: string | undefined) => (v && v !== 'none' ? true : false);
-            const mapPool = (v: string | undefined) => (v && v !== 'none' ? true : false);
-
-            const storiesStr = String(userData.stories || '1');
-            const stories = parseInt(storiesStr === '3' ? '3' : storiesStr, 10) || 1;
-
-            // 2) Create property
-            const propertyPayload: PropertyCreateRequestSchema = {
+            // 3️⃣ Create Quote
+            const quoteReq: QuoteCreateRequestSchema = {
               user_id: userId,
-              street_address: String(userData.street_address || '').trim(),
-              city: String(userData.city || '').trim(),
-              state: String(userData.state || '').trim(),
-              zip_code: String(userData.zip_code || '').trim(),
-              construction_year: parseInt(String(userData.construction_year || new Date().getFullYear()), 10),
-              home_value: parseInt(String(userData.home_value || '300000'), 10),
-              square_footage: parseInt(String(userData.square_footage || '1500'), 10),
-              property_type: mapPropertyType(userData.property_type) as any,
-              construction_material: mapConstructionMaterial(userData.construction_material) as any,
-              roof_type: (userData.roof_type || 'composition_shingle') as any,
-              foundation_type: mapFoundation(userData.foundation_type) as any,
-              stories: stories,
-              bedrooms: userData.bedrooms ? parseInt(String(userData.bedrooms), 10) : null,
-              bathrooms: userData.bathrooms ? parseInt(String(userData.bathrooms), 10) : null,
-              garage: mapGarage(userData.garage),
-              pool: mapPool(userData.pool),
+              property_id: propertyId,
+              coverage_type: "homeowners",
             };
+            const quoteRes = await createQuote(userId, quoteReq);
 
-            const propertyRes = await createProperty(propertyPayload);
-
-            // 3) Create quote
-            const homeValueNum = propertyPayload.home_value;
-            const dwellingLimit = Math.min(Math.round(homeValueNum * 1.2), homeValueNum + 100000);
-            const deductible = parseInt(String(userData.deductible || '1000'), 10);
-
-            const quotePayload: QuoteCreateRequestSchema = {
-              property_id: propertyRes.property.property_id,
-              user_id: userId,
-              dwelling_limit: dwellingLimit,
-              deductible: deductible,
-            };
-
-            const quoteRes = await createQuote(quotePayload);
-
-            // Build UI-friendly quote summary
-            const total = parseFloat(quoteRes.total_premium);
-            const monthly = Math.round(total / 12);
             const normalizedQuote = {
-              monthly,
-              annual: Math.round(total),
-              dwelling_limit: quoteRes.quote_version.dwelling_limit,
-              discounts: quoteRes.quote_version.discounts || [],
+              monthly: quoteRes?.premium_monthly,
+              annual: quoteRes?.premium_annual,
+              dwelling_limit: quoteRes?.dwelling_limit,
+              coverage: quoteRes?.coverage,
             };
 
-            addAssistantMessage('quote_result', step, { quote: normalizedQuote });
+            addAssistantMessage("quote_result", step, { quote: normalizedQuote });
           } catch (e) {
-            console.error('Failed to create quote via API:', e);
-            addAssistantMessage('Sorry, I could not generate a quote right now. Please try again.');
+            console.error("Failed to create quote via API:", e);
+            addAssistantMessage(
+              "Sorry, I could not generate a quote right now. Please try again."
+            );
           }
 
-          // After showing the loading and quote message, open final options in chat
           setTimeout(() => {
             setConversationStep(conversationFlow.length);
             setAwaitingUser(true);
@@ -192,24 +127,30 @@ const QuoteApplication = () => {
   const handleUserResponse = (value: any, step: any) => {
     if (isProcessing) return;
 
-    const isSelection = value && typeof value === 'object' && 'text' in value && 'value' in value;
-    const messageContent = isSelection ? value.text : (typeof value === 'string' ? value : value.text || value);
+    const isSelection =
+      value && typeof value === "object" && "text" in value && "value" in value;
+    const messageContent = isSelection
+      ? value.text
+      : typeof value === "string"
+      ? value
+      : value.text || value;
     addUserMessage(messageContent);
 
-    // Update user data if step has a field
     if (step?.field) {
       const storedValue = isSelection ? value.value : messageContent;
       setUserData((prev: any) => ({ ...prev, [step.field]: storedValue }));
     }
 
     setTimeout(() => {
-      setConversationStep(prev => prev + 1);
+      setConversationStep((prev) => prev + 1);
     }, 800);
   };
 
   const handleFinalAction = (action: string) => {
-    // Handle final actions like proceed, customize, etc.
-    console.log('Final action:', action);
+    console.log("Final action:", action);
+    if (action === "proceed" || action === "view_dashboard") {
+      navigate("/dashboard");
+    }
   };
 
   const startConversation = () => {

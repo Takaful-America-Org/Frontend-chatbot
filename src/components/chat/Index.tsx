@@ -1,13 +1,13 @@
 // Layout components
-export { default as MainLayout } from './MainLayout';
+export { default as MainLayout } from '../layouts/MainLayout';
 export { default as ConversationCard } from './ConversationCard';
 export { default as BackgroundPattern } from './BackgroundPattern';
 
 // Main components
-export { default as Header } from './Header';
+export { default as Header } from '../Header';
 export { default as WelcomeScreen } from './WelcomeScreen';
 export { default as ChatInterface } from './ChatInterface';
-export { default as Footer } from './Footer';
+export { default as Footer } from '../Footer';
 
 // Chat components
 export { default as ProgressIndicator } from './ProgressIndicator';
